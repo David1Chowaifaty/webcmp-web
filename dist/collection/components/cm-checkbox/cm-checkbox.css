@@ -1,0 +1,84 @@
+:host {
+  display: block;
+  position: relative;
+}
+.root-container {
+  display: flex;
+  align-items: center;
+  width: min-content;
+  height: min-content;
+}
+button {
+  all: unset;
+}
+input {
+  transform: translateX(-100%);
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  margin: 0;
+  width: 0;
+  height: 0;
+}
+.CheckboxRoot {
+  border: 2px solid hsl(var(--border));
+  width: 25px;
+  height: 25px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.CheckboxRoot[data-state='checked'] {
+  border-width: 0;
+  background: hsl(var(--primary));
+}
+.CheckboxRoot[data-state='checked']:hover {
+  background: hsla(var(--primary), 0.8);
+}
+.CheckboxRoot[data-state='unchecked']:hover {
+  background-color: hsla(var(--input), 0.1);
+}
+.CheckboxRoot:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.CheckboxIndicator {
+  color: hsl(var(--primary-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+.CheckboxIndicator[data-state='checked'] {
+  animation: fadeIn 200ms forwards;
+}
+.CheckboxIndicator[data-state='unchecked'] {
+  animation: fadeOut 200ms forwards;
+}
+.Label {
+  color: var(--foreground);
+  padding-left: 15px;
+  font-size: 15px;
+  line-height: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

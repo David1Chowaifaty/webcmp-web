@@ -1,0 +1,2 @@
+import{r,h as o,H as s,g as a}from"./p-06b48781.js";const t=":host{background-color:hsl(var(--background));border-radius:var(--radius);border:1px solid hsl(var(--border));padding:25px;display:grid}";const n=class{constructor(o){r(this,o)}componentWillLoad(){this.element.className="container"}render(){return o(s,null,o("slot",null))}get element(){return a(this)}};n.style=t;export{n as cm_card};
+//# sourceMappingURL=p-a5806e94.entry.js.map

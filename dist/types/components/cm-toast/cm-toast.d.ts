@@ -1,0 +1,37 @@
+import { EventEmitter } from '../../stencil-public-runtime';
+import { IToast, TPositions } from './toast';
+export declare class CmToast {
+  position: TPositions;
+  swipable: boolean;
+  isVisible: boolean;
+  isDragging: boolean;
+  toast: EventEmitter<IToast>;
+  element: HTMLElement;
+  private startX;
+  private endX;
+  private toastRef;
+  private duration;
+  private showToastTimeOut;
+  private toastBody;
+  handleTouchStart(event: TouchEvent): void;
+  setSwipeEventToRootElement(state: string): void;
+  handleTouchMove(event: TouchEvent): void;
+  applyStyles(style: Partial<CSSStyleDeclaration>): void;
+  onToast(event: CustomEvent<IToast>): void;
+  handleTouchEnd(): void;
+  handleMouseDown(event: MouseEvent): void;
+  handleMouseMove(event: MouseEvent): void;
+  handleMouseUp(): void;
+  handleMouseLeave(): void;
+  updateSwipePosition(deltaX: number): void;
+  handleSwipeEnd(delta: number): void;
+  dismissToast(): void;
+  resetSwipePosition(): void;
+  hideToast(): Promise<void>;
+  showToast(): Promise<void>;
+  disconnectedCallback(): void;
+  removeEvents(): void;
+  addEvents(): void;
+  renderIcon(): any;
+  render(): any;
+}

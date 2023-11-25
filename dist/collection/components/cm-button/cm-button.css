@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  --ring-color: hsl(var(--ring));
+}
+button {
+  all: unset;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: var(--radius);
+  transition: all 300ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 10px;
+  position: relative;
+  box-sizing: border-box;
+}
+button:focus-visible {
+  outline: 1px solid var(--ring-color);
+  outline-offset: 2px;
+}
+.default {
+  background: hsla(var(--primary));
+  color: hsl(var(--primary-foreground));
+  --ring-color: hsl(var(--primary));
+  --spinner-background: hsl(var(--primary-foreground));
+}
+.link {
+  color: hsl(var(--primary));
+  --ring-color: hsl(var(--primary));
+}
+.secondary {
+  background: hsl(var(--secondary));
+  --ring-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  --spinner-background: hsl(var(--secondary-foreground));
+}
+.danger {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  --spinner-background: hsl(var(--destructive-foreground));
+  --ring-color: hsl(var(--destructive));
+}
+
+.default:hover {
+  background: hsla(var(--primary), 0.8);
+}
+
+.secondary:hover {
+  background: hsla(var(--secondary), 0.8);
+}
+.danger:hover {
+  background-color: hsla(var(--destructive), 0.8);
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+.spinner {
+  height: 24px;
+  width: 24px;
+}

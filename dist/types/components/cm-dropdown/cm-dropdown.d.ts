@@ -1,0 +1,38 @@
+import { EventEmitter } from '../../stencil-public-runtime';
+export declare class CmDropdown {
+  itemNames: IItems[];
+  rtl: boolean;
+  search: boolean;
+  dropdownTitle: string;
+  isDropdownVisible: boolean;
+  searchQuery: string;
+  selectedItemName: string;
+  currentHighlightedIndex: number;
+  filteredItemNames: IItems[];
+  el: HTMLElement;
+  itemClick: EventEmitter<string>;
+  private searchTimeout;
+  private buttonRef;
+  private dropdownContainer;
+  private inputRef;
+  componentWillLoad(): void;
+  addFocusToButton(): void;
+  componentDidLoad(): void;
+  detectRTLContext(): void;
+  handleDocumentClick(event: MouseEvent): void;
+  updateListFocus(): void;
+  onMouseOver(index: number): void;
+  handleSearch(): void;
+  onKeyDown(event: KeyboardEvent): void;
+  handleInputKeyDown(event: any): void;
+  handleNavigation(event: KeyboardEvent): void;
+  onItemClick(): void;
+  onMouseLeave(): void;
+  toggleDropdown(): void;
+  calculateDropdownPosition(): void;
+  renderItem(item: IItems, index: number): any;
+  renderButtonName(): string;
+  handleChange(event: any): void;
+  handleButtonKeyDown(event: KeyboardEvent): void;
+  render(): any;
+}
