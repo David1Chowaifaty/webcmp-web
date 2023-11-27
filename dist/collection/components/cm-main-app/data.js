@@ -108,4 +108,30 @@ export const dropdownProperties = [
   { prop: 'dropdownTitle', type: 'string', default: 'Toggle DropDown' },
 ];
 export const dropdownEvents = [{ event: 'itemClick', type: 'EventEmitter<string>' }];
+{
+  /*Dialog */
+}
+export const dialogFeatures = ['Keyboard navigation support.', 'Slot support for dialog header, body, and footer'];
+export const dialogProperties = [
+  {
+    prop: 'openDialog',
+    type: 'null',
+  },
+  {
+    prop: 'closeDialog',
+    type: 'null',
+  },
+];
+export const dialogMethods = [
+  {
+    Name: 'toggleOpen',
+    Parameters: '_',
+    Description: 'Opens the dialog.',
+  },
+  {
+    Name: 'toggleClose',
+    Parameters: '_',
+    Description: 'Closes the dialog.',
+  },
+];
 //# sourceMappingURL=data.js.map

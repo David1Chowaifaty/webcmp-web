@@ -59,3 +59,13 @@ export declare const dropdownEvents: {
   event: string;
   type: string;
 }[];
+export declare const dialogFeatures: string[];
+export declare const dialogProperties: {
+  prop: string;
+  type: any;
+}[];
+export declare const dialogMethods: {
+  Name: string;
+  Parameters: string;
+  Description: string;
+}[];
