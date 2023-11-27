@@ -5,6 +5,8 @@ export declare class CmToast {
   swipable: boolean;
   isVisible: boolean;
   isDragging: boolean;
+  toastClicked: boolean;
+  isFocused: boolean;
   toast: EventEmitter<IToast>;
   element: HTMLElement;
   private startX;
@@ -13,15 +15,20 @@ export declare class CmToast {
   private duration;
   private showToastTimeOut;
   private toastBody;
+  private eventsAdded;
+  componentWillLoad(): void;
   handleTouchStart(event: TouchEvent): void;
   setSwipeEventToRootElement(state: string): void;
   handleTouchMove(event: TouchEvent): void;
   applyStyles(style: Partial<CSSStyleDeclaration>): void;
   onToast(event: CustomEvent<IToast>): void;
+  handleDocumentClick(event: MouseEvent): void;
   handleTouchEnd(): void;
   handleMouseDown(event: MouseEvent): void;
   handleMouseMove(event: MouseEvent): void;
   handleMouseUp(): void;
+  setToastTimeout(): void;
+  clearToastTimeout(): void;
   handleMouseLeave(): void;
   updateSwipePosition(deltaX: number): void;
   handleSwipeEnd(delta: number): void;
@@ -33,5 +40,8 @@ export declare class CmToast {
   removeEvents(): void;
   addEvents(): void;
   renderIcon(): any;
+  handleMouseEnter(): void;
+  handleToastClicked(): void;
+  handleFocus(): void;
   render(): any;
 }

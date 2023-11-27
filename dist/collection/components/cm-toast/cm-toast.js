@@ -3,10 +3,22 @@ export class CmToast {
   constructor() {
     this.duration = 5000;
     this.toastBody = { description: '', type: 'success' };
+    this.eventsAdded = false;
     this.position = 'bottom-left';
     this.swipable = false;
     this.isVisible = false;
     this.isDragging = false;
+    this.toastClicked = false;
+    this.isFocused = false;
+  }
+  componentWillLoad() {
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
   handleTouchStart(event) {
     this.startX = event.touches[0].clientX;
@@ -51,14 +63,21 @@ export class CmToast {
       this.toastRef.style.borderColor = 'hsl(var(--destructive))';
     }
     this.showToast();
-    this.showToastTimeOut = setTimeout(() => {
-      this.hideToast();
-    }, this.duration);
+    this.setToastTimeout();
+  }
+  handleDocumentClick(event) {
+    const target = event.target;
+    if (!this.element.contains(target) && this.toastClicked) {
+      this.toastClicked = false;
+      this.setToastTimeout();
+    }
   }
   handleTouchEnd() {
     this.handleSwipeEnd(this.startX - this.endX);
   }
   handleMouseDown(event) {
+    this.clearToastTimeout();
+    this.toastClicked = true;
     this.isDragging = true;
     this.startX = event.clientX;
   }
@@ -74,19 +93,32 @@ export class CmToast {
     }
   }
   handleMouseUp() {
+    if (!this.isDragging)
+      return;
     this.isDragging = false;
     this.handleSwipeEnd(this.startX - this.endX);
   }
+  setToastTimeout() {
+    this.showToastTimeOut = setTimeout(() => {
+      this.hideToast();
+    }, this.duration);
+  }
+  clearToastTimeout() {
+    if (this.showToastTimeOut) {
+      clearTimeout(this.showToastTimeOut);
+      this.showToastTimeOut = undefined;
+    }
+  }
   handleMouseLeave() {
-    if (!this.isDragging)
+    if (this.isFocused || this.toastClicked || this.isDragging) {
       return;
-    this.handleSwipeEnd(this.startX - this.endX);
+    }
+    this.setToastTimeout();
   }
   updateSwipePosition(deltaX) {
     this.toastRef.style.setProperty('--rd-toast-swipe-move-x', `${deltaX}px`);
   }
   handleSwipeEnd(delta) {
-    console.log(delta);
     if (!isNaN(delta)) {
       const isLeft = this.position.includes('left');
       let MAX_SWIPE = isLeft ? 2500 : -2500;
@@ -94,10 +126,11 @@ export class CmToast {
         MAX_SWIPE = isLeft ? 280 : -280;
         this.isDragging = false;
       }
-      console.log(MAX_SWIPE);
-      if ((!isLeft && delta < -150 && delta > MAX_SWIPE) || (isLeft && delta > 150 && delta < MAX_SWIPE)) {
+      if ((!isLeft && delta <= -100 && delta >= MAX_SWIPE) || (isLeft && delta >= 100 && delta <= MAX_SWIPE)) {
         this.toastRef.style.setProperty('--rd-toast-swipe-end-x', `${-delta}px`);
         this.dismissToast();
+        this.startX = 0;
+        this.endX = 0;
       }
       else {
         this.resetSwipePosition();
@@ -117,6 +150,7 @@ export class CmToast {
     this.toastRef.style.removeProperty('--rd-toast-swipe-move-x');
   }
   async hideToast() {
+    this.clearToastTimeout();
     this.resetSwipePosition();
     this.toastRef.setAttribute('data-state', 'close');
     this.toastRef.style.opacity = '0';
@@ -124,12 +158,12 @@ export class CmToast {
     if (this.isDragging) {
       this.isDragging = false;
     }
-    clearTimeout(this.showToastTimeOut);
     if (this.swipable) {
       this.removeEvents();
     }
   }
   async showToast() {
+    this.clearToastTimeout();
     this.toastRef.style.opacity = '1';
     this.toastRef.setAttribute('data-state', 'open');
     this.isVisible = true;
@@ -141,25 +175,31 @@ export class CmToast {
     if (this.swipable) {
       this.removeEvents();
     }
-    clearTimeout(this.showToastTimeOut);
+    this.clearToastTimeout();
   }
   removeEvents() {
-    this.toastRef.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-    this.toastRef.removeEventListener('touchmove', this.handleTouchMove.bind(this));
-    this.toastRef.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-    this.toastRef.removeEventListener('mousedown', this.handleMouseDown.bind(this));
-    this.toastRef.removeEventListener('mousemove', this.handleMouseMove.bind(this));
-    this.toastRef.removeEventListener('mouseup', this.handleMouseUp.bind(this));
-    this.toastRef.removeEventListener('mouseleave', this.handleMouseLeave.bind(this));
+    if (this.eventsAdded) {
+      this.toastRef.removeEventListener('touchstart', this.handleTouchStart);
+      this.toastRef.removeEventListener('touchmove', this.handleTouchMove);
+      this.toastRef.removeEventListener('touchend', this.handleTouchEnd);
+      this.toastRef.removeEventListener('mousedown', this.handleMouseDown);
+      document.removeEventListener('mousemove', this.handleMouseMove);
+      document.removeEventListener('mouseup', this.handleMouseUp);
+      this.toastRef.removeEventListener('mouseleave', this.handleMouseLeave);
+      this.eventsAdded = false;
+    }
   }
   addEvents() {
-    this.toastRef.addEventListener('touchstart', this.handleTouchStart.bind(this));
-    this.toastRef.addEventListener('touchmove', this.handleTouchMove.bind(this));
-    this.toastRef.addEventListener('touchend', this.handleTouchEnd.bind(this));
-    this.toastRef.addEventListener('mousedown', this.handleMouseDown.bind(this));
-    this.toastRef.addEventListener('mousemove', this.handleMouseMove.bind(this));
-    this.toastRef.addEventListener('mouseup', this.handleMouseUp.bind(this));
-    this.toastRef.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+    if (!this.eventsAdded) {
+      this.toastRef.addEventListener('touchstart', this.handleTouchStart);
+      this.toastRef.addEventListener('touchmove', this.handleTouchMove);
+      this.toastRef.addEventListener('touchend', this.handleTouchEnd);
+      this.toastRef.addEventListener('mousedown', this.handleMouseDown);
+      document.addEventListener('mousemove', this.handleMouseMove);
+      document.addEventListener('mouseup', this.handleMouseUp);
+      this.toastRef.addEventListener('mouseleave', this.handleMouseLeave);
+      this.eventsAdded = true;
+    }
   }
   renderIcon() {
     switch (this.toastBody.type) {
@@ -171,8 +211,21 @@ export class CmToast {
         return null;
     }
   }
+  handleMouseEnter() {
+    this.clearToastTimeout();
+  }
+  handleToastClicked() {
+    if (!this.isDragging) {
+      this.clearToastTimeout();
+      this.toastClicked = true;
+    }
+  }
+  handleFocus() {
+    this.isFocused = true;
+    this.clearToastTimeout();
+  }
   render() {
-    return (h(Host, null, h("section", { ref: el => (this.toastRef = el), class: `ToastRoot` }, this.isVisible && (h(Fragment, null, this.toastBody.type === 'custom' ? (this.toastBody.body) : (h(Fragment, null, h("h3", { class: "ToastTitle" }, this.toastBody.title), h("p", { class: "ToastDescription" }, this.toastBody.description), this.renderIcon())))))));
+    return (h(Host, null, h("section", { "aria-live": "off", role: "status", "aria-atomic": "true", tabIndex: 0, onMouseLeave: this.handleMouseLeave.bind(this), onMouseEnter: this.handleMouseEnter.bind(this), onFocus: this.handleFocus.bind(this), ref: el => (this.toastRef = el), class: `ToastRoot` }, this.isVisible && (h(Fragment, null, this.toastBody.type === 'custom' ? (this.toastBody.body) : (h(Fragment, null, h("h3", { class: "ToastTitle" }, this.toastBody.title), h("p", { class: "ToastDescription" }, this.toastBody.description), this.renderIcon())))))));
   }
   static get is() { return "cm-toast"; }
   static get encapsulation() { return "scoped"; }
@@ -235,7 +288,9 @@ export class CmToast {
   static get states() {
     return {
       "isVisible": {},
-      "isDragging": {}
+      "isDragging": {},
+      "toastClicked": {},
+      "isFocused": {}
     };
   }
   static get events() {
@@ -306,6 +361,12 @@ export class CmToast {
         "name": "toast",
         "method": "onToast",
         "target": "body",
+        "capture": false,
+        "passive": false
+      }, {
+        "name": "click",
+        "method": "handleDocumentClick",
+        "target": "document",
         "capture": false,
         "passive": false
       }];

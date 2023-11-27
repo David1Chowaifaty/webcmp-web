@@ -4,7 +4,6 @@ export class CmInput {
     this.type = undefined;
     this.name = undefined;
     this.placeholder = undefined;
-    this.value = undefined;
     this.inputid = undefined;
     this.class = undefined;
     this.required = undefined;
@@ -19,9 +18,10 @@ export class CmInput {
     this.autofocus = undefined;
     this.size = undefined;
     this.multiple = undefined;
+    this.value = undefined;
   }
   render() {
-    return (h(Host, null, h("input", { type: this.type, name: this.name, placeholder: this.placeholder, value: this.value, id: this.inputid, class: this.class, required: this.required, disabled: this.disabled, readonly: this.readonly, maxlength: this.maxlength, min: this.min, max: this.max, step: this.step, pattern: this.pattern, autocomplete: this.autocomplete, autofocus: this.autofocus, size: this.size, multiple: this.multiple, onChange: e => this.textChanged.emit(e.target.value) })));
+    return (h(Host, null, h("input", { type: this.type, name: this.name, placeholder: this.placeholder, id: this.inputid, class: this.class, required: this.required, disabled: this.disabled, readonly: this.readonly, maxlength: this.maxlength, min: this.min, max: this.max, step: this.step, pattern: this.pattern, autocomplete: this.autocomplete, autofocus: this.autofocus, size: this.size, multiple: this.multiple, value: this.value, onChange: e => this.textChanged.emit(e.target.value) })));
   }
   static get is() { return "cm-input"; }
   static get encapsulation() { return "scoped"; }
@@ -91,23 +91,6 @@ export class CmInput {
           "text": ""
         },
         "attribute": "placeholder",
-        "reflect": true
-      },
-      "value": {
-        "type": "string",
-        "mutable": false,
-        "complexType": {
-          "original": "string",
-          "resolved": "string",
-          "references": {}
-        },
-        "required": false,
-        "optional": false,
-        "docs": {
-          "tags": [],
-          "text": ""
-        },
-        "attribute": "value",
         "reflect": true
       },
       "inputid": {
@@ -346,6 +329,23 @@ export class CmInput {
           "text": ""
         },
         "attribute": "multiple",
+        "reflect": true
+      },
+      "value": {
+        "type": "string",
+        "mutable": false,
+        "complexType": {
+          "original": "string",
+          "resolved": "string",
+          "references": {}
+        },
+        "required": false,
+        "optional": false,
+        "docs": {
+          "tags": [],
+          "text": ""
+        },
+        "attribute": "value",
         "reflect": true
       }
     };

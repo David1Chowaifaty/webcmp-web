@@ -10,7 +10,6 @@ const CmInput = /*@__PURE__*/ proxyCustomElement(class CmInput extends HTMLEleme
     this.type = undefined;
     this.name = undefined;
     this.placeholder = undefined;
-    this.value = undefined;
     this.inputid = undefined;
     this.class = undefined;
     this.required = undefined;
@@ -25,16 +24,16 @@ const CmInput = /*@__PURE__*/ proxyCustomElement(class CmInput extends HTMLEleme
     this.autofocus = undefined;
     this.size = undefined;
     this.multiple = undefined;
+    this.value = undefined;
   }
   render() {
-    return (h(Host, null, h("input", { type: this.type, name: this.name, placeholder: this.placeholder, value: this.value, id: this.inputid, class: this.class, required: this.required, disabled: this.disabled, readonly: this.readonly, maxlength: this.maxlength, min: this.min, max: this.max, step: this.step, pattern: this.pattern, autocomplete: this.autocomplete, autofocus: this.autofocus, size: this.size, multiple: this.multiple, onChange: e => this.textChanged.emit(e.target.value) })));
+    return (h(Host, null, h("input", { type: this.type, name: this.name, placeholder: this.placeholder, id: this.inputid, class: this.class, required: this.required, disabled: this.disabled, readonly: this.readonly, maxlength: this.maxlength, min: this.min, max: this.max, step: this.step, pattern: this.pattern, autocomplete: this.autocomplete, autofocus: this.autofocus, size: this.size, multiple: this.multiple, value: this.value, onChange: e => this.textChanged.emit(e.target.value) })));
   }
   static get style() { return cmInputCss; }
 }, [2, "cm-input", {
     "type": [513],
     "name": [513],
     "placeholder": [513],
-    "value": [513],
     "inputid": [513],
     "class": [513],
     "required": [516],
@@ -48,7 +47,8 @@ const CmInput = /*@__PURE__*/ proxyCustomElement(class CmInput extends HTMLEleme
     "autocomplete": [513],
     "autofocus": [516],
     "size": [514],
-    "multiple": [516]
+    "multiple": [516],
+    "value": [513]
   }]);
 function defineCustomElement() {
   if (typeof customElements === "undefined") {

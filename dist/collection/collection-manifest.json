@@ -3,6 +3,7 @@
     "components/cm-button/cm-button.js",
     "components/cm-card/cm-card.js",
     "components/cm-checkbox/cm-checkbox.js",
+    "components/cm-dialog/cm-dialog.js",
     "components/cm-dropdown/cm-dropdown.js",
     "components/cm-input/cm-input.js",
     "components/cm-main-app/cm-main-app.js",
