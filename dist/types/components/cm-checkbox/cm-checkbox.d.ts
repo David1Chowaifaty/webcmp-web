@@ -8,6 +8,8 @@ export declare class CmCheckbox {
   defaultChecked: boolean;
   labelMessage: string;
   checkedChange: EventEmitter<boolean>;
+  private checkbox;
+  componentDidLoad(): void;
   handleChange(): void;
   render(): any;
 }

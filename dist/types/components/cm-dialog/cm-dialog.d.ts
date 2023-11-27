@@ -2,6 +2,7 @@ import { EventEmitter } from '../../stencil-public-runtime';
 export declare class CmDialog {
   isDialogVisible: boolean;
   isAlertDialog: boolean;
+  dialogTitle: string;
   el: HTMLElement;
   openDialog: EventEmitter<null>;
   closeDialog: EventEmitter<null>;
